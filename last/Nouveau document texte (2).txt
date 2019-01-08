@@ -1,0 +1,202 @@
+
+#include Grove_I2C_Motor_Driver.h
+
+
+
+
+ default I2C address is 0x0f
+#define I2C_ADDRESS 0x0f
+
+
+const int capteur=5; capteur port OUT relié au pin5 de l'arduino 
+
+
+const int extreme_droite = 3 ; initialisation du port en pin 4
+const int droite = 4 ;  ...
+const int extreme_gauche = 5 ;  ....
+const int gauche = 6 ; ... 
+
+int lumiere;  affiche si le faisceau lumineux est coupé ou non par le disque. Si la lumière est allumé la partie trouée est devant le capteur
+int tour=0; variable qui compte le nombre de fois où la partie trouée du disque passe devant le capteur
+float trmin;  variable qui affichera la vitesse du disque en tourmin
+
+unsigned long temps;  sert à enregistrer le temps écoulé depuis la dernière mise à jour du compteur
+
+
+
+
+
+void setup() {
+  Motor.begin(I2C_ADDRESS);
+  pinMode(gauche, OUTPUT);
+      pinMode(droite, OUTPUT);
+   pinMode(extreme_gauche, OUTPUT);
+   pinMode(extreme_droite, OUTPUT);
+   
+   pinMode(gauche, INPUT);
+      pinMode(droite, INPUT);
+   pinMode(extreme_gauche, INPUT);
+   pinMode(extreme_droite, INPUT);
+
+
+ temps=millis();
+}
+
+void loop() {
+   Set speed of MOTOR1, Clockwise, speed -100~100 
+  Motor.speed(MOTOR1, 100);
+    Motor.speed(MOTOR2, 100);
+
+   Set speed of MOTOR2, Anticlockwise
+ Motor.speed(MOTOR1, -100);
+  Motor.speed(MOTOR2, 100);
+
+  delay(7000);
+   Change speed and direction of MOTOR1
+  Motor.speed(MOTOR1, -100);
+   Change speed and direction of MOTOR2
+  Motor.speed(MOTOR2, -100);
+  delay(2000);
+   Stop MOTOR1 and MOTOR2
+  Motor.stop(MOTOR1);
+  Motor.stop(MOTOR2);
+  delay(4000);
+
+LOW =0 and high = 1;
+ moteur 1 est le moteur gauche 
+moteur 2 est le moteur droit
+ on exprime le moteur droitgauche arriere par la valeur négative par exemple -100
+ dans ce cas on a l'extreme gauche, gauche l'extreme droite et droite ont une valeur null (0)
+ LE capteur gauche s'allume quand il detecte le blanc, et il s'eteind quand il detecte le noir
+  
+    
+    
+    
+    digitalWrite(gauche, HIGH);
+        digitalWrite(gauche, LOW);
+
+    digitalWrite(droite, HIGH);
+        digitalWrite(droite, LOW);
+
+     digitalWrite(extreme_gauche, HIGH);
+         digitalWrite(extreme_gauche, LOW);
+
+     digitalWrite(extreme_droite, HIGH);
+    digitalWrite(extreme_droite, LOW);
+
+
+if(HIGH == digitalRead(droite))
+{ Serial.println(black);
+}
+else if(LOW == digitalRead(extreme_droite)){
+ Serial.println(white);
+}                            
+else if(HIGH == digitalRead(gauche))
+{ Serial.println(black);
+}
+else if(LOW == digitalRead(extreme_gauche))
+{ Serial.println(white);
+}
+ this will be  marche tt droit
+if(LOW == digitalRead(extreme_droite) && LOW == digitalRead(droite) && LOW == digitalRead(extreme_gauche) && LOW == digitalRead(gauche)){  
+Motor.speed(MOTOR1, 100);
+Motor.speed(MOTOR2, 100);
+}
+
+ deviller vers la droite
+else if( LOW == digitalRead(extreme_droite) && LOW == digitalRead(droite) && HIGH == digitalRead(extreme_gauche) && LOW == digitalRead(gauche)){  
+Motor.speed(MOTOR1, 0);  not sure about this value quand le moteur s'arrete , on donne quel valeur 0
+Motor.speed(MOTOR2,100 );  
+}
+
+
+else if( LOW == digitalRead(extreme_droite) && LOW == digitalRead(droite) && LOW == digitalRead(extreme_gauche) && HIGH == digitalRead(gauche))  {  
+Motor.speed(MOTOR1, -100);
+Motor.speed(MOTOR2, 100);
+}
+else if( LOW == digitalRead(extreme_droite) && LOW == digitalRead(droite) && HIGH == digitalRead(gauche) && HIGH == digitalRead(extreme_gauche))  {  
+Motor.speed(MOTOR1, -100);
+Motor.speed(MOTOR2, 100);
+}
+else if( LOW == digitalRead(extreme_droite) &&   HIGH == digitalRead(droite) && LOW == digitalRead(gauche) && LOW == digitalRead(extreme_gauche))  {  
+Motor.speed(MOTOR1, 100);
+Motor.speed(MOTOR2, -100);
+}
+else if( LOW == digitalRead(extreme_droite) &&   HIGH == digitalRead(droite) && LOW == digitalRead(gauche) && HIGH == digitalRead(extreme_gauche))  {  
+
+}
+else if( LOW == digitalRead(extreme_droite) &&   HIGH == digitalRead(droite) && HIGH == digitalRead(gauche) && LOW == digitalRead(extreme_gauche)) {  
+Motor.speed(MOTOR1, 100);
+Motor.speed(MOTOR2, 100);
+}
+else if( LOW == digitalRead(extreme_droite) &&   HIGH == digitalRead(droite) && HIGH == digitalRead(gauche) && HIGH == digitalRead(extreme_gauche))  {  
+Motor.speed(MOTOR1, -100);
+Motor.speed(MOTOR2, 100);
+}
+else if ( HIGH == digitalRead(extreme_droite) &&   LOW == digitalRead(droite) && LOW == digitalRead(gauche) && LOW == digitalRead(extreme_gauche) ) {  
+Motor.speed(MOTOR1, 100);
+Motor.speed(MOTOR2, 0);
+}
+
+else if( HIGH == digitalRead(extreme_droite) &&   LOW == digitalRead(droite) && LOW == digitalRead(gauche) && HIGH == digitalRead(extreme_gauche))  {  
+
+}
+
+
+
+else if( HIGH == digitalRead(extreme_droite) &&     LOW == digitalRead(droite) && HIGH == digitalRead(gauche) && LOW == digitalRead(extreme_gauche) ) {  
+
+}
+else if( HIGH == digitalRead(extreme_droite) &&   LOW == digitalRead(droite) && HIGH == digitalRead(gauche) && HIGH == digitalRead(extreme_gauche))  {  
+
+}
+else if( HIGH == digitalRead(extreme_droite) &&   HIGH == digitalRead(droite) && LOW == digitalRead(gauche) && LOW == digitalRead(extreme_gauche))  {  
+Motor.speed(MOTOR1, 100);
+Motor.speed(MOTOR2, -100);
+}
+else if( HIGH == digitalRead(extreme_droite) &&   HIGH == digitalRead(droite) && LOW == digitalRead(gauche) && HIGH == digitalRead(extreme_gauche))  {  
+}
+else if( HIGH == digitalRead(extreme_droite) &&   HIGH == digitalRead(droite) && HIGH == digitalRead(gauche) && LOW == digitalRead(extreme_gauche)) {  
+Motor.speed(MOTOR1, 0);
+Motor.speed(MOTOR2, 0);
+
+} 
+else if( HIGH == digitalRead(extreme_droite) &&   HIGH == digitalRead(droite) && HIGH == digitalRead(gauche) && HIGH == digitalRead(extreme_gauche)) {  
+Motor.speed(MOTOR1, 100 );
+Motor.speed(MOTOR2, 100);
+
+} 
+Vérifie si le trou arrive à hauteur du capteur
+  lumiere = digitalRead(capteur);
+
+  if (lumiere == LOW) {
+
+     on ajoute 1 à la variable qui compte le nombre de tours
+
+    tour=tour+1;
+     si il s'est passé plus d'une seconde depuis le début du calcul du nombre de tours
+
+    if ((millis() - temps)  1000){
+
+     trmin= (nb de tours depuis le dernier calcul) (temps écoulé entre les deux caculs en minute 1min=60 000ms
+
+    trmin=tour(millis()-temps)60000.0;
+
+    Serial.print(vitesse en tourmin );
+
+    Serial.println(trmin);
+
+    Réinitialisation du temps et du nombre de tours
+
+    temps=millis();
+
+    tour=0;
+
+    }
+  }
+  delay(9000);
+
+}
+
+
+ End of file
